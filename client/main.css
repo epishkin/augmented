@@ -6,10 +6,11 @@ body {
     stroke: #0000ff;
 }
 
-.node>circle {
-    stroke: #ff0000;
+.node>polygon {
+    stroke: white;
+    fill: black;
 }
 
 .node>text {
-    stroke: #ffffff;
+    stroke: white;
 }
