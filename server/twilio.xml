@@ -1,5 +1,3 @@
 <Response>
-    <Say voice="woman">
-        Empire State Building. Completed in 1931. Height: 1,454 ft. Architect: Shreve, Lamb and Harmon.
-    </Say>
+    <Say voice="woman">Empire State Building. Completed in 1931. Height: 1,454 ft. Architect: Shreve, Lamb and Harmon.</Say>
 </Response>
