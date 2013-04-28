@@ -11,15 +11,15 @@ body {
     fill: black;
 }
 
-.node>.tooltip {
-    stroke: white;
-}
-
 .node>.building {
     stroke: white;
     fill: red;
 }
 
-.node>text {
+.tooltip>polygon {
+    stroke: white;
+}
+
+.tooltip>text {
     stroke: white;
 }

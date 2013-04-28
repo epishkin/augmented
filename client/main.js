@@ -48,6 +48,8 @@ function showTooltip()
 {
     return function(event) {
         highlighted = true;
+
+        update();
     }
 }
 
@@ -89,7 +91,7 @@ function update() {
     buildings.transition().duration(200).style("opacity", selectionOpacity);
 
     var tooltips = d3.select("svg").selectAll(".tooltip");
-    tooltips.transition().duration(200).style("opacity", highlighteOpacity);
+    tooltips.transition().duration(200).style("opacity", highlightOpacity);
 
     //Add new nodes
     var node = nodes.enter().append("g")
@@ -101,17 +103,18 @@ function update() {
             return "translate("+x+","+y+")";
         });
 
-    node.append("polygon")
+    var tooltip = node.append("g")
         .attr("class", "tooltip")
-        .attr("points", "0,0, 150,0, 150,100, 0,100");
-//        .style("opacity", highlightOpacity);
+        .style("opacity", highlightOpacity);
 
-    node.append("text")
+    tooltip.append("polygon")
+        .attr("points", "0,0, 150,0, 150,100, 0,100");
+
+    tooltip.append("text")
         .attr("dx", "10px")
         .attr("dy", "25px")
         .attr("text-anchor", "left")
         .text(function(d) {return d.name;});
-//        .style("opacity", highlightOpacity);
 
     //create buildings
     node.append("polyline")
@@ -126,5 +129,5 @@ function selectionOpacity(data, index) {
 }
 
 function highlightOpacity(data, index) {
-    return highlited && index == selectedNode ? 1 : 0
+    return highlighted && index == selectedNode ? 1 : 0
 }
