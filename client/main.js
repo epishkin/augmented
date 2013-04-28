@@ -24,38 +24,45 @@ var svg = d3.select("body")
 var x = 0;
 var selectedNode = 1;
 
-function translateToNodeIndex() {
-    var size = uiData.length
-    return Math.floor((x + amplitude) / realWidth * size);
-}
-function swipe() {
-    selectedNode = translateToNodeIndex();
-
-    update();
-    console.log("x: " + x + ", selected: " + selectedNode);
-}
-
-function moveFinger(dx) {
-    return function(event) {
-        x += dx;
-        if (x >= amplitude) {
-            x = amplitude-1;
-        } else if (x < -amplitude) {
-            x = -(amplitude-1);
-        }
-        swipe();
-    }
-}
-
 var socket = io.connect('http://localhost:8880');
+//todo onSocket call onHandMove(coordinateFromLeap)
 
-//todo replace with socket handler
 d3.select('body').call(d3.keybinding()
     .on('←', moveFinger(-10))
     .on('→', moveFinger(10))
 );
 
 update();
+
+
+function onHandMove(coordinate) {
+    x = coordinate;
+    onCoordinateChange();
+}
+
+function moveFinger(dx) {
+    return function(event) {
+        x += dx;
+        onCoordinateChange();
+    }
+}
+
+function onCoordinateChange() {
+    if (x >= amplitude) {
+        x = amplitude-1;
+    } else if (x < -amplitude) {
+        x = -(amplitude-1);
+    }
+
+    selectedNode = translateToNodeIndex();
+    console.log("x: " + x + ", selected: " + selectedNode);
+
+    update();
+}
+function translateToNodeIndex() {
+    var size = uiData.length
+    return Math.floor((x + amplitude) / realWidth * size);
+}
 
 function update() {
     var nodes = d3.select("svg").selectAll(".node")
