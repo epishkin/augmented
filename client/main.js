@@ -1,8 +1,8 @@
 var width = 800,
     height = 600;
 
-var amplitude = 1.5;
-var realWidth = amplitude * 2;
+var min = -0.5
+var max = 0.5
 
 var uiData = [
     {name:"Central Park", offset:100,
@@ -51,9 +51,9 @@ function moveFinger(dx) {
 
 function onCoordinateChange() {
     if (x >= amplitude) {
-        x = amplitude-1;
+        x = max - 0.01;
     } else if (x < -amplitude) {
-        x = -(amplitude-1);
+        x = -(min + 0.01);
     }
 
     selectedNode = translateToNodeIndex();
@@ -63,7 +63,7 @@ function onCoordinateChange() {
 }
 function translateToNodeIndex() {
     var size = uiData.length
-    return Math.floor((x + amplitude) / realWidth * size);
+    return Math.floor((x - min) / Math.abs(max - min) * size);
 }
 
 function update() {
