@@ -11,8 +11,13 @@ body {
     fill: black;
 }
 
-.node>polyline {
+.node>.tooltip {
     stroke: white;
+}
+
+.node>.building {
+    stroke: white;
+    fill: red;
 }
 
 .node>text {
