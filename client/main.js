@@ -24,10 +24,12 @@ var svg = d3.select("body")
 var x = 0;
 var selectedNode = 1;
 
-function swipe() {
+function translateToNodeIndex() {
     var size = uiData.length
-    var translated = Math.floor((x + amplitude) / realWidth * size);
-    selectedNode = translated;
+    return Math.floor((x + amplitude) / realWidth * size);
+}
+function swipe() {
+    selectedNode = translateToNodeIndex();
 
     update();
     console.log("x: " + x + ", selected: " + selectedNode);
