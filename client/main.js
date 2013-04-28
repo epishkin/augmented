@@ -30,8 +30,8 @@ socket.on('finger', function (data) {
 });
 
 d3.select('body').call(d3.keybinding()
-    .on('←', moveFinger(-10))
-    .on('→', moveFinger(10))
+    .on('←', moveFinger(-0.1))
+    .on('→', moveFinger(0.1))
 );
 
 update();
