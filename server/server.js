@@ -9,6 +9,7 @@ server.listen(8880);
 
 var socket = null;
 io.sockets.on('connection', function (connection) {
+  console.log('client connected');
   socket = connection;
 });
 
