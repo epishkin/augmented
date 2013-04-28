@@ -6,13 +6,13 @@ var max = 200;
 
 var uiData = [
     {name:"Central Park", offset:100,
-        polyline: "20,20 40,25 60,40 80,120 120,140 200,180 20,180 20,20"},
+        polyline: "20,20 40,25 60,40 80,120 120,140 200,180 20,180 20,20", selected: true, tooltip: false},
 
     {name:"Empire State Bldg", offset:300,
-        polyline: "20,20 40,25 60,40 80,120 120,140 200,180 20,180 20,20"},
+        polyline: "20,20 40,25 60,40 80,120 120,140 200,180 20,180 20,20", selected: false, tooltip: false},
 
     {name:"One WTC", offset:500,
-        polyline: "20,20 40,25 60,40 80,120 120,140 200,180 20,180 20,20"}
+        polyline: "20,20 40,25 60,40 80,120 120,140 200,180 20,180 20,20", selected: false, tooltip: false}
 ];
 
 var svg = d3.select("body")
@@ -22,8 +22,7 @@ var svg = d3.select("body")
     .append("svg:g");
 
 var x = 0;
-var selectedNode = 1;
-var highlighted = false;
+var selectedNode = 0;
 
 var socket = io.connect('http://localhost:8880');
 socket.on('finger', function (data) {
@@ -47,7 +46,7 @@ function onHandMove(coordinate) {
 function showTooltip()
 {
     return function(event) {
-        highlighted = true;
+        uiData[selectedNode].tooltip = true;
 
         update();
     }
@@ -67,15 +66,22 @@ function onCoordinateChange() {
         x = -(min + 0.01);
     }
 
+    var updated = false;
     var newNode = translateToNodeIndex();
     if(newNode != selectedNode) {
-        highlighted = false;
+        uiData[selectedNode].selected = false;
+        uiData[selectedNode].tooltip = false;
+        updated = true;
     }
+
     selectedNode = newNode;
+    uiData[selectedNode].selected = true;
 
-    console.log("x: " + x + ", selected: " + selectedNode + ", " +highlighted);
+    console.log("x: " + x + ", selected: " + selectedNode + ", " + uiData);
 
-    update();
+    if (updated) {
+        update();
+    }
 }
 function translateToNodeIndex() {
     var size = uiData.length
@@ -88,10 +94,14 @@ function update() {
 
     //display selected building
     var buildings = d3.select("svg").selectAll(".building");
-    buildings.transition().duration(200).style("opacity", selectionOpacity);
+
+    buildings
+        .transition().duration(500)
+        .style("opacity", function (data) {
+            return data.selected ? 1 : 0; });
 
     var tooltips = d3.select("svg").selectAll(".tooltip");
-    tooltips.transition().duration(200).style("opacity", highlightOpacity);
+    tooltips.transition().duration(500).style("opacity", function(d) { return d.tooltip ? 1 : 0; });
 
     //Add new nodes
     var node = nodes.enter().append("g")
@@ -103,9 +113,19 @@ function update() {
             return "translate("+x+","+y+")";
         });
 
+    //create buildings
+    node.append("polyline")
+        .attr("class", "building")
+        .attr("points", function(d) {return d.polyline})
+        .attr("transform", "translate(0, 200)")
+        .style("opacity", 0)
+        .transition()
+        .duration(1000)
+        .style("opacity", function(data) { return data.selected ? 1 : 0;});
+
     var tooltip = node.append("g")
         .attr("class", "tooltip")
-        .style("opacity", highlightOpacity);
+        .style("opacity", 0);
 
     tooltip.append("polygon")
         .attr("points", "0,0, 150,0, 150,100, 0,100");
@@ -115,19 +135,4 @@ function update() {
         .attr("dy", "25px")
         .attr("text-anchor", "left")
         .text(function(d) {return d.name;});
-
-    //create buildings
-    node.append("polyline")
-        .attr("class", "building")
-        .attr("points", function(d) {return d.polyline})
-        .attr("transform", "translate(0, 200)")
-        .style("opacity", selectionOpacity);
-}
-
-function selectionOpacity(data, index) {
-    return index == selectedNode ? 1 : 0
-}
-
-function highlightOpacity(data, index) {
-    return highlighted && index == selectedNode ? 1 : 0
 }

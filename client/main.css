@@ -1,25 +1,25 @@
 body {
     background: #000000;
-}
-
-.orbit {
-    stroke: #0000ff;
+    stroke: #2ba4e7;
 }
 
 .node>polygon {
-    stroke: white;
-    fill: black;
 }
 
 .node>.building {
-    stroke: white;
-    fill: red;
+    stroke: #000000;
+    fill: #2ba4e7;
+}
+
+.node>.building-flash {
+    fill: #2ba4e7;
 }
 
 .tooltip>polygon {
-    stroke: white;
 }
 
 .tooltip>text {
-    stroke: white;
+    font-size: 24px;
+    font-weight: 200;
+    font-family: "Titillium Web","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
