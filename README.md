@@ -5,3 +5,5 @@ Technologies used:
 - Leap Motion - for over the air gestures detection and interface control
 - d3.js - for data visualization
 - Lego - for simulating miniature city environment
+
+![Project Logo](http://epishkin.github.io/augmented/images/augmented_logo.png)
