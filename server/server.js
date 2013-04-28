@@ -4,6 +4,7 @@ var Leap = require('leapjs').Leap,
     io = require('socket.io'),
     io = io.listen(server);
 
+io.set('log level', 1);
 server.listen(8880);
 
 var socket = null;
@@ -14,7 +15,6 @@ io.sockets.on('connection', function (connection) {
 var controllerOptions = {enableGestures: true};
 Leap.loop(controllerOptions, function(frame) {
     if (!socket) {
-        console.log('no socket on leap event');
         return;
     }
 
@@ -22,14 +22,9 @@ Leap.loop(controllerOptions, function(frame) {
         var gesture = frame.gestures[0];
         if(gesture.state == 'start') {
             switch(gesture.type) {
-                case 'swipe': {
-                    console.log('swipe');
-                    socket.emit('swipe', gesture.direction);
-                    break;
-                }
-                case 'tap': {
-                    console.log('tap');
-                    socket.emit('tap');
+                case 'circle': {
+                    console.log('circle');
+                    socket.emit('circle');
                     break;
                 }
             }
