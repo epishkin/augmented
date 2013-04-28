@@ -1,44 +1,43 @@
-var Leap = require('leapjs').Leap
-var app = require('express'),
+var Leap = require('leapjs').Leap,
+    app = require('express'),
     server = require('http').createServer(app),
     io = require('socket.io'),
     io = io.listen(server);
 
 server.listen(8880);
 
-var controllerOptions = {enableGestures: true};
+var socket = null;
+io.sockets.on('connection', function (connection) {
+  socket = connection;
+});
 
+var controllerOptions = {enableGestures: true};
 Leap.loop(controllerOptions, function(frame) {
+    if (!socket) {
+        console.log('no socket on leap event');
+        return;
+    }
+
     if (frame.gestures.length) {
         var gesture = frame.gestures[0];
         if(gesture.state == 'start') {
-            switch(gesture) {
+            switch(gesture.type) {
                 case 'swipe': {
-                    socket.emit('swipe', { direction: gesture.direction });
+                    console.log('swipe');
+                    socket.emit('swipe', gesture.direction);
                     break;
                 }
                 case 'tap': {
+                    console.log('tap');
                     socket.emit('tap');
                     break;
                 }
             }
         }
     } else {
-        if (frame.hands.length) {
-            console.log('finger '+frame.hands[0].direction);
+        if (frame.pointables.length) {
+            var finger = frame.pointables[0];
+            socket.emit('finger', finger.tipPosition);
         }
     }
-})
-
-/*
-
- io.sockets.on('connection', function (socket) {
- //  socket.emit('object-removed');
- //  socket.emit('rotate', { direction: -1 });
-
- socket.on('my other event', function (data) {
- console.log(data);
- });
-
- });
- */
+});
