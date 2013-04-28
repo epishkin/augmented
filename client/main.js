@@ -1,7 +1,7 @@
 var width = 800,
     height = 600;
 
-var amplitude = 400
+var amplitude = 1.5;
 var realWidth = amplitude * 2;
 
 var uiData = [
@@ -25,7 +25,9 @@ var x = 0;
 var selectedNode = 1;
 
 var socket = io.connect('http://localhost:8880');
-//todo onSocket call onHandMove(coordinateFromLeap)
+socket.on('finger', function (data) {
+    onHandMove(data[0]);
+});
 
 d3.select('body').call(d3.keybinding()
     .on('←', moveFinger(-10))
