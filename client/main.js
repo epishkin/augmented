@@ -5,9 +5,15 @@ var amplitude = 400
 var realWidth = amplitude * 2;
 
 var uiData = [
-    {name:"One WTC", offset:100},
-    {name:"Empire State Bldg", offset:300},
-    {name:"Central Park", offset:500}];
+    {name:"Central Park", offset:100,
+        polyline: "20,20 40,25 60,40 80,120 120,140 200,180"},
+
+    {name:"Empire State Bldg", offset:300,
+        polyline: "20,20 40,25 60,40 80,120 120,140 200,180"},
+
+    {name:"One WTC", offset:500,
+        polyline: "20,20 40,25 60,40 80,120 120,140 200,180"}
+];
 
 var svg = d3.select("body")
     .append("svg:svg")
@@ -53,14 +59,9 @@ function update() {
     var nodes = d3.select("svg").selectAll(".node")
         .data(uiData);
 
-    nodes.attr("transform", function(d, i) {
-        var x = d.offset;
-        var y = 200;
-
-        return "translate("+x+","+y+")";
-    });
-    nodes.transition().duration(200).style("stroke-opacity", function(d,i) {return i == selectedNode ? 1 : 0});
-
+    //display selected building
+    var buildings = d3.select("svg").selectAll(".building");
+    buildings.transition().duration(200).style("stroke-opacity", selectionOpacity);
 
     //Add new nodes
     var node = nodes.enter().append("g")
@@ -70,8 +71,7 @@ function update() {
             var y = 200;
 
             return "translate("+x+","+y+")";
-        })
-        .style("stroke-opacity", function(d,i) {return i == selectedNode ? 1 : 0});
+        });
 
     node.append("polygon")
         .attr("points", "0,0, 150,0, 150,100, 0,100");
@@ -80,6 +80,16 @@ function update() {
         .attr("dx", "10px")
         .attr("dy", "25px")
         .attr("text-anchor", "left")
-        //.style("stroke-opacity", 0)
         .text(function(d) {return d.name;});
+
+    //create buildings
+    node.append("polyline")
+        .attr("class", "building")
+        .attr("points", function(d) {return d.polyline})
+        .attr("transform", "translate(0, 200)")
+        .style("stroke-opacity", selectionOpacity);
+}
+
+function selectionOpacity(data, index) {
+    return index == selectedNode ? 1 : 0
 }

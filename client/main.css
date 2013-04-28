@@ -11,6 +11,10 @@ body {
     fill: black;
 }
 
+.node>polyline {
+    stroke: white;
+}
+
 .node>text {
     stroke: white;
 }
