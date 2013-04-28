@@ -3,15 +3,18 @@ body {
     stroke: #2ba4e7;
 }
 
+.cursor>circle {
+    stroke: #000000;
+}
+
 .node>polygon {
 }
 
 .node>.building {
-    stroke: #000000;
-    fill: #2ba4e7;
 }
 
 .node>.building-flash {
+    stroke: #000000;
     fill: #2ba4e7;
 }
 
