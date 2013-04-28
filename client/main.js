@@ -1,8 +1,8 @@
 var width = 800,
     height = 600;
 
-var min = -0.5
-var max = 0.5
+var min = -80;
+var max = 200;
 
 var uiData = [
     {name:"Central Park", offset:100,
@@ -50,9 +50,9 @@ function moveFinger(dx) {
 }
 
 function onCoordinateChange() {
-    if (x >= amplitude) {
+    if (x >= max) {
         x = max - 0.01;
-    } else if (x < -amplitude) {
+    } else if (x < min) {
         x = -(min + 0.01);
     }
 
