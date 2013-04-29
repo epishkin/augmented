@@ -6,6 +6,6 @@ Technologies used:
 - d3.js - for data visualization
 - Lego - for simulating miniature city environment
 
-[Project Info at hackerleague.org](https://www.hackerleague.org/hackathons/techcrunch-disrupt-nyc-2013/hacks/augmented-mentality)
+[Project Info at hackerleague.org](https://www.hackerleague.org/hackathons/techcrunch-disrupt-nyc-2013/hacks/augmented-mentality) | [Video Presentation](http://www.youtube.com/watch?feature=player_embedded&v=jY1HixxSXus)
 
 ![Project Logo](http://epishkin.github.io/augmented/images/augmented_logo.png)
